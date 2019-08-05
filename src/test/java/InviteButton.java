@@ -1,26 +1,38 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import pages.IntegriVideoChatPage;
+
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class InviteButton {
-    public static final String URL = "https://dev.integrivideo.com/demo/chat/new";
-    @Test
-    public void inviteLinkIsCopiedTest() throws IOException, UnsupportedFlavorException {
+    WebDriver driver;
+    @BeforeTest
+    public void openDriver(){
         System.setProperty("webdriver.chrome.driver", "src/test/resources/webdrivers/chromedriver.exe");
-        ChromeDriver driver = new ChromeDriver();
-        driver.get(URL);
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
-        String link1 = driver.getCurrentUrl();
-        WebElement element = driver.findElement(By.id("invite-users-to-chat"));
-        element.click();
-        String link2 = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-        Assert.assertEquals(link1, link2);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    }
+    @Test
+    public void messageIsDisplayedTest() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.clickInvite();
+        chat.verifyInviteLink(driver.getCurrentUrl());
+    }
+
+    @AfterTest
+    public void closeDriver () {
         driver.quit();
     }
 }

@@ -21,6 +21,7 @@ public class Messanger {
         chat.openPage();
         chat.inputText("test");
         chat.sendText();
+        chat.verifyText("test");
     }
 
     @AfterTest
