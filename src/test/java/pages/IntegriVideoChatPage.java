@@ -1,8 +1,10 @@
 package pages;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -22,7 +24,8 @@ public class IntegriVideoChatPage {
     By editButton = By.xpath("//span[@class='iv-icon iv-icon-pencil integri-chat-edit-message']");
     By editArea = By.xpath("//div[@class='integri-chat-message ']/textarea");
     By message = By.cssSelector(".integri-chat-message-text");
-
+    By deleteButton = By.cssSelector((".integri-chat-remove-message"));
+    By scriptCode = By.xpath("//code");
 
     public IntegriVideoChatPage(WebDriver driver) {
         this.driver = driver;
@@ -68,6 +71,32 @@ public class IntegriVideoChatPage {
         driver.findElement(editArea).sendKeys(editedText);
         driver.findElement(editArea).sendKeys(Keys.ENTER);
         wait.until(ExpectedConditions.textToBe(message, editedText));
+    }
+
+    public void removeMessage(){
+        driver.findElement(deleteButton).click();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        wait.until(ExpectedConditions.textToBe(message, "removed..."));
+    }
+
+    public void clickScript(){
+        driver.findElement(scriptCode).click();
+    }
+
+    public String getCodeText() {
+        return driver.findElement(scriptCode).getText().replace("\n", "").replace("\r", "");
+    }
+
+    public void verifyScript(String expectedScript){
+        try {
+            String actualScript = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+            Assert.assertEquals(actualScript, expectedScript);
+        } catch (UnsupportedFlavorException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
