@@ -4,6 +4,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.IntegriVideoChatPage;
+import pages.IntegryVideoSettingsPage;
 import java.util.concurrent.TimeUnit;
 
 public class TestsExecutor {
@@ -58,6 +59,37 @@ public class TestsExecutor {
         chat.openPage();
         chat.clickScript();
         chat.verifyScript(chat.getCodeText());
+    }
+
+    @Test
+    public void settingsModalIsClosed() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
+        settings.clickSettingsBtn();
+        settings.closeSettingsModal();
+    }
+
+    @Test
+    public void nameIsSaved() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
+        settings.clickSettingsBtn();
+        settings.insertName("Valera");
+        settings.saveForm();
+        settings.verifyName("Valera");
+    }
+
+    @Test
+    public void emailIsSaved() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
+        settings.clickSettingsBtn();
+        settings.insertEmail("test@mail.com");
+        settings.clickSettingsBtn();
+        settings.verifyEmail("test@mail.com");
     }
 
     @AfterTest
