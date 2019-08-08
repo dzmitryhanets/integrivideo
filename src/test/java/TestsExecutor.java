@@ -1,3 +1,4 @@
+import com.sun.org.glassfish.gmbal.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
@@ -16,6 +17,7 @@ public class TestsExecutor {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
+
     @Test
     public void messageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
@@ -23,6 +25,26 @@ public class TestsExecutor {
         chat.inputText("test");
         chat.sendText();
         chat.verifyText("test");
+    }
+
+    @Test
+    public void messageIsSentByEnterTest() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.inputText("test");
+        chat.sendTextWithEnter();
+        chat.verifyText("test");
+    }
+
+    @Test
+    public void longMessageIsDisplayedTest() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        for(int i = 0; i < 1000; i++) {
+            chat.inputText("A");
+        }
+        chat.sendText();
+        //chat.verifyText("test");
     }
 
     @Test
