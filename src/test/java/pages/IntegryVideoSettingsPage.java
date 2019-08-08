@@ -11,11 +11,13 @@ public class IntegryVideoSettingsPage {
     WebDriverWait wait;
     private By settingsBtn = By.cssSelector(".integri-chat-settings");
     private By settingsCrossBtn = By.xpath("//*[contains(text(),'Settings')]//*[contains(@class,'close-integri-modal')]");
-    private By settingsModal = By.xpath("//div[@class='integri-modal-head']");
+    private By settingsModal = By.xpath("//div[@class='integri-modal-shown']");
     private By nameInput = By.xpath("//input[@name='userName']");
     private By saveBtn = By.cssSelector(".integri-user-settings-save");
     private By sessionName = By.xpath("//div[@class='integri-session-user-name']");
     private By inputEmail = By.xpath("//input[@name='userEmail']");
+    private By inputAvatar = By.xpath("//input[@name='userPic']");
+    private By sessionStyle = By.xpath("//div[@class='integri-chat-session']/div");
 
     public IntegryVideoSettingsPage(WebDriver driver) {
         this.driver = driver;
@@ -28,7 +30,7 @@ public class IntegryVideoSettingsPage {
 
     public void closeSettingsModal(){
         driver.findElement(settingsCrossBtn).click();
-        Assert.assertTrue(!driver.findElement(settingsModal).isDisplayed());
+        Assert.assertTrue(!driver.findElement(settingsCrossBtn).isDisplayed());
     }
 
     public void insertName(String name){
@@ -39,7 +41,6 @@ public class IntegryVideoSettingsPage {
 
     public void saveForm(){
         driver.findElement(saveBtn).click();
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(settingsModal));
     }
 
     public void verifyName(String expectedName){
@@ -55,8 +56,21 @@ public class IntegryVideoSettingsPage {
 
     public void verifyEmail(String expectedEmail){
         saveForm();
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(settingsModal));
+        clickSettingsBtn();
         String actualEmail = driver.findElement(inputEmail).getAttribute("value");
         Assert.assertEquals(actualEmail, expectedEmail);
+    }
+
+    public void insertAvatar(String avatarURL){
+        driver.findElement(inputAvatar).click();
+        driver.findElement(inputAvatar).sendKeys(avatarURL);
+    }
+
+    public void verifyAvatar(String expectedUrl){
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(settingsModal));
+        String actualUrl = driver.findElement(sessionStyle).getAttribute("style");
+        Assert.assertTrue(actualUrl.contains(expectedUrl));
     }
 
 }

@@ -88,8 +88,18 @@ public class TestsExecutor {
         IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
         settings.clickSettingsBtn();
         settings.insertEmail("test@mail.com");
-        settings.clickSettingsBtn();
         settings.verifyEmail("test@mail.com");
+    }
+
+    @Test
+    public void avatarIsSaved() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
+        settings.clickSettingsBtn();
+        settings.insertAvatar("https://static.tvtropes.org/pmwiki/pub/images/stormtroopers_chase_han_and_chewie_7d44b7c5.jpeg");
+        settings.saveForm();
+        settings.verifyAvatar("https://static.tvtropes.org/pmwiki/pub/images/stormtroopers_chase_han_and_chewie_7d44b7c5.jpeg");
     }
 
     @AfterTest
