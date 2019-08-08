@@ -4,7 +4,6 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -42,6 +41,10 @@ public class IntegriVideoChatPage {
 
     public void sendText(){
         driver.findElement(sendMessageButton).click();
+    }
+
+    public void sendTextWithEnter(){
+        driver.findElement(textArea).sendKeys(Keys.ENTER);
     }
 
     public void verifyText(String expectedString){
