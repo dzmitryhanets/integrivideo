@@ -1,4 +1,3 @@
-import com.sun.org.glassfish.gmbal.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
@@ -18,7 +17,7 @@ public class TestsExecutor {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-    @Test
+    @Test (description = "Отправить любое сообщение используя Кнопку")
     public void messageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
@@ -27,7 +26,7 @@ public class TestsExecutor {
         chat.verifyText("test");
     }
 
-    @Test
+    @Test (description = "Отправить любое сообщение используя Enter")
     public void messageIsSentByEnterTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
@@ -36,18 +35,32 @@ public class TestsExecutor {
         chat.verifyText("test");
     }
 
-    @Test
+    @Test (description = "Отправить сообщение из 1000 символов")
     public void longMessageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
-        for(int i = 0; i < 1000; i++) {
-            chat.inputText("A");
-        }
-        chat.sendText();
-        //chat.verifyText("test");
+        chat.inputAndVerifyLongText("A");
     }
 
-    @Test
+    @Test (description = "Отправить сообщение со ссылкой")
+    public void linkMessageIsDisplayedTest() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.inputText("https://tut.by");
+        chat.sendText();
+        chat.verifyLinkMsg("https://tut.by");
+    }
+
+    @Test (description = "Отправить сообщение содержащее Javascript code")
+    public void injectionMessageIsDisplayedTest() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.inputText("<html><body><p>test</p></body></html>");
+        chat.sendText();
+        chat.verifyText("test");
+    }
+
+    @Test (description = "Отредактировать сообщение")
     public void editedMessageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
@@ -57,15 +70,17 @@ public class TestsExecutor {
         chat.verifyText("Edited Text");
     }
 
-    @Test
-    public void inviteLinkIsCorrect() {
+    @Test (description = "Отредактировать сообщение удалив весь текст")
+    public void emptyEditedMessageErrorTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
-        chat.clickInvite();
-        chat.verifyInviteLink(driver.getCurrentUrl());
+        chat.inputText("test");
+        chat.sendText();
+        chat.clickEditMessageBtn("");
+        chat.verifyEmptyTextErrorMsg();
     }
 
-    @Test
+    @Test (description = "Удалить сообщение")
     public void messageIsDeleted() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
@@ -73,6 +88,14 @@ public class TestsExecutor {
         chat.sendText();
         chat.removeMessage();
         chat.verifyText("removed...");
+    }
+
+    @Test
+    public void inviteLinkIsCorrect() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.clickInvite();
+        chat.verifyInviteLink(driver.getCurrentUrl());
     }
 
     @Test

@@ -1,17 +1,14 @@
 package pages;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.List;
 
 public class IntegriVideoChatPage {
     public static final String URL = "https://dev.integrivideo.com/demo/chat/new";
@@ -25,6 +22,9 @@ public class IntegriVideoChatPage {
     By message = By.cssSelector(".integri-chat-message-text");
     By deleteButton = By.cssSelector((".integri-chat-remove-message"));
     By scriptCode = By.xpath("//code");
+    By linkTextMsg = By.xpath("//*[@class='integri-chat-message-text']//a[@target='_blank']");
+    By emptyEditedTextMsg = By.cssSelector(".integri-notify-error");
+    By trialMessageScreen = By.xpath("//div[@class='sign-up']/..");
 
     public IntegriVideoChatPage(WebDriver driver) {
         this.driver = driver;
@@ -39,6 +39,16 @@ public class IntegriVideoChatPage {
         driver.findElement(textArea).sendKeys(text);
     }
 
+    public void inputAndVerifyLongText(String text){
+        text = "A";
+        for (int i = 1; i < 1000; i++){
+            text = text + "A";
+        }
+        driver.findElement(textArea).sendKeys(text);
+        sendText();
+        verifyText(text);
+    }
+
     public void sendText(){
         driver.findElement(sendMessageButton).click();
     }
@@ -50,6 +60,26 @@ public class IntegriVideoChatPage {
     public void verifyText(String expectedString){
         String actualString = driver.findElement(message).getText();
         Assert.assertEquals(actualString, expectedString);
+    }
+
+    public void verifyLinkMsg(String expectedLinkMsg){
+        wait.until(ExpectedConditions.textToBe(linkTextMsg, expectedLinkMsg));
+        String actualLinkMsg = driver.findElement(linkTextMsg).getText();
+        Assert.assertEquals(actualLinkMsg, expectedLinkMsg);
+    }
+
+    public void verifyEmptyTextErrorMsg(){
+        String errorMessage = "Message cannot be empty!";
+        wait.until(ExpectedConditions.textToBe(emptyEditedTextMsg, errorMessage));
+        String actualErrorMsg = driver.findElement(emptyEditedTextMsg).getText();
+        Assert.assertEquals(actualErrorMsg, errorMessage);
+    }
+
+    public void verifyTrialMsgText(){
+        String trialMsg = "This is trial version";
+        wait.until(ExpectedConditions.textToBe(trialMessageScreen, trialMsg));
+        String actualTrialMsg = driver.findElement(trialMessageScreen).getText();
+        Assert.assertEquals(actualTrialMsg, trialMsg);
     }
 
     public void clickInvite(){
