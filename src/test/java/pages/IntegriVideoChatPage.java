@@ -26,7 +26,7 @@ public class IntegriVideoChatPage {
     private By emptyEditedTextMsg = By.cssSelector(".integri-notify-error");
     private By trialMessageScreen = By.xpath("//div[@class='sign-up']/..");
 
-    public IntegriVideoChatPage(WebDriver driver) {
+    public IntegriVideoChatPage(WebDriver driver){
         this.driver = driver;
         this.wait = new WebDriverWait(driver, 10);
     }

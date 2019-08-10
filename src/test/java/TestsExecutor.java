@@ -20,7 +20,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Отправить любое сообщение используя Кнопку")
-    public void messageIsDisplayedTest() {
+    public void messageIsDisplayedTest(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
@@ -29,7 +29,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Отправить любое сообщение используя Enter")
-    public void messageIsSentByEnterTest() {
+    public void messageIsSentByEnterTest(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
@@ -38,14 +38,14 @@ public class TestsExecutor {
     }
 
     @Test (description = "Отправить сообщение из 1000 символов")
-    public void longMessageIsDisplayedTest() {
+    public void longMessageIsDisplayedTest(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputAndVerifyLongText("A");
     }
 
     @Test (description = "Отправить сообщение со ссылкой")
-    public void linkMessageIsDisplayedTest() {
+    public void linkMessageIsDisplayedTest(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("https://tut.by");
@@ -54,7 +54,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Отправить сообщение содержащее Javascript code")
-    public void injectionMessageIsDisplayedTest() {
+    public void injectionMessageIsDisplayedTest(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("<html><body><p>test</p></body></html>");
@@ -63,7 +63,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Отредактировать сообщение")
-    public void editedMessageIsDisplayedTest() {
+    public void editedMessageIsDisplayedTest(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
@@ -73,7 +73,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Отредактировать сообщение удалив весь текст")
-    public void emptyEditedMessageErrorTest() {
+    public void emptyEditedMessageErrorTest(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
@@ -83,7 +83,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Удалить сообщение")
-    public void messageIsDeleted() {
+    public void messageIsDeleted(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
@@ -93,7 +93,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Отправить 11 сообщений")
-    public void trialMessageIsDisplayedTest() {
+    public void trialMessageIsDisplayedTest(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.getTrialScreen();
@@ -101,7 +101,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Изменить имя")
-    public void nameIsSaved() {
+    public void nameIsSaved(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
@@ -112,7 +112,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Изменить email")
-    public void emailIsSaved() {
+    public void emailIsSaved(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
@@ -122,7 +122,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Изменить Photo URL")
-    public void avatarIsSaved() {
+    public void avatarIsSaved(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
@@ -134,7 +134,7 @@ public class TestsExecutor {
 
 
     @Test (description = "Проверить работу пноки Invite")
-    public void inviteLinkIsCorrect() {
+    public void inviteLinkIsCorrect(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.clickInvite();
@@ -142,7 +142,7 @@ public class TestsExecutor {
     }
 
     @Test (description = "Проверить работу кнопки с кодом")
-    public void scriptIsCorrect() {
+    public void scriptIsCorrect(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.clickScript();
@@ -173,7 +173,7 @@ public class TestsExecutor {
     }
 
     @Test
-    public void settingsModalIsClosed() {
+    public void settingsModalIsClosed(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
@@ -182,8 +182,8 @@ public class TestsExecutor {
     }
 
     @AfterTest
-    public void closeDriver () {
+    public void closeDriver(){
         driver.quit();
-        }
-
     }
+
+}

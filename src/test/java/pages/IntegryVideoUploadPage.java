@@ -21,7 +21,7 @@ public class IntegryVideoUploadPage{
     private By loader = By.xpath("//*[contains(text(),'Upload files')]");
     private By attachedFileName = By.cssSelector(".integri-chat-message-attachment-file-name");
 
-    public IntegryVideoUploadPage(WebDriver driver) {
+    public IntegryVideoUploadPage(WebDriver driver){
         this.driver = driver;
         this.wait = new WebDriverWait(driver, 10);
     }
@@ -38,7 +38,7 @@ public class IntegryVideoUploadPage{
         wait.until(ExpectedConditions.presenceOfElementLocated(fileToAttach));
     }
 
-    public void uploadFile() {
+    public void uploadFile(){
         driver.findElement(uploadStartBtn).click();
         wait.until(ExpectedConditions.invisibilityOf(driver.findElement(loader)));
     }

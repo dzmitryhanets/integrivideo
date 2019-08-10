@@ -19,7 +19,7 @@ public class IntegryVideoSettingsPage{
     private By inputAvatar = By.xpath("//input[@name='userPic']");
     private By sessionStyle = By.xpath("//div[@class='integri-chat-session']/div");
 
-    public IntegryVideoSettingsPage(WebDriver driver) {
+    public IntegryVideoSettingsPage(WebDriver driver){
         this.driver = driver;
         this.wait = new WebDriverWait(driver, 10);;
     }
