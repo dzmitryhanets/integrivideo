@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-public class IntegryVideoSettingsPage {
+public class IntegryVideoSettingsPage{
     WebDriver driver;
     WebDriverWait wait;
     private By settingsBtn = By.cssSelector(".integri-chat-settings");
@@ -21,7 +21,7 @@ public class IntegryVideoSettingsPage {
 
     public IntegryVideoSettingsPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, 10);
+        this.wait = new WebDriverWait(driver, 10);;
     }
 
     public void clickSettingsBtn(){

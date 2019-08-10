@@ -5,6 +5,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.IntegriVideoChatPage;
 import pages.IntegryVideoSettingsPage;
+import pages.IntegryVideoUploadPage;
+
 import java.util.concurrent.TimeUnit;
 
 public class TestsExecutor {
@@ -90,32 +92,15 @@ public class TestsExecutor {
         chat.verifyText("removed...");
     }
 
-    @Test
-    public void inviteLinkIsCorrect() {
+    @Test (description = "Отправить 11 сообщений")
+    public void trialMessageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
-        chat.clickInvite();
-        chat.verifyInviteLink(driver.getCurrentUrl());
+        chat.getTrialScreen();
+        chat.verifyTrialMsgText();
     }
 
-    @Test
-    public void scriptIsCorrect() {
-        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
-        chat.openPage();
-        chat.clickScript();
-        chat.verifyScript(chat.getCodeText());
-    }
-
-    @Test
-    public void settingsModalIsClosed() {
-        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
-        chat.openPage();
-        IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
-        settings.clickSettingsBtn();
-        settings.closeSettingsModal();
-    }
-
-    @Test
+    @Test (description = "Изменить имя")
     public void nameIsSaved() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
@@ -126,7 +111,7 @@ public class TestsExecutor {
         settings.verifyName("Valera");
     }
 
-    @Test
+    @Test (description = "Изменить email")
     public void emailIsSaved() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
@@ -136,7 +121,7 @@ public class TestsExecutor {
         settings.verifyEmail("test@mail.com");
     }
 
-    @Test
+    @Test (description = "Изменить Photo URL")
     public void avatarIsSaved() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
@@ -145,6 +130,55 @@ public class TestsExecutor {
         settings.insertAvatar("https://static.tvtropes.org/pmwiki/pub/images/stormtroopers_chase_han_and_chewie_7d44b7c5.jpeg");
         settings.saveForm();
         settings.verifyAvatar("https://static.tvtropes.org/pmwiki/pub/images/stormtroopers_chase_han_and_chewie_7d44b7c5.jpeg");
+    }
+
+
+    @Test (description = "Проверить работу пноки Invite")
+    public void inviteLinkIsCorrect() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.clickInvite();
+        chat.verifyInviteLink(driver.getCurrentUrl());
+    }
+
+    @Test (description = "Проверить работу кнопки с кодом")
+    public void scriptIsCorrect() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.clickScript();
+        chat.verifyScript(chat.getCodeText());
+    }
+
+    @Test (description = "Загрузить 1 файл")
+    public void uploadFileTest(){
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        IntegryVideoUploadPage uploadPage = new IntegryVideoUploadPage(driver);
+        uploadPage.clickDragAndDrop();
+        uploadPage.startFileInput("src/test/resources/files/test.txt");
+        uploadPage.uploadFile();
+        uploadPage.verifyAttachedFile("test.txt");
+    }
+
+    @Test (description = "Загрузить 2 файла")
+    public void uploadFewFilesTest(){
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        IntegryVideoUploadPage uploadPage = new IntegryVideoUploadPage(driver);
+        uploadPage.clickDragAndDrop();
+        uploadPage.startFileInput("src/test/resources/files/test.txt");
+        uploadPage.startFileInput("src/test/resources/files/test.txt");
+        uploadPage.uploadFile();
+        uploadPage.verifyMultipleAttachments(2);
+    }
+
+    @Test
+    public void settingsModalIsClosed() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
+        settings.clickSettingsBtn();
+        settings.closeSettingsModal();
     }
 
     @AfterTest

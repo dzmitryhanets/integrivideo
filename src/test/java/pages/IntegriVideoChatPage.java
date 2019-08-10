@@ -11,20 +11,20 @@ import java.io.IOException;
 import java.util.List;
 
 public class IntegriVideoChatPage {
-    public static final String URL = "https://dev.integrivideo.com/demo/chat/new";
     WebDriver driver;
     WebDriverWait wait;
-    By inviteLink = By.id("invite-users-to-chat");
-    By textArea = By.xpath("//*[@placeholder='Start typing here']");
-    By sendMessageButton = By.xpath("//*[@title='Send message']");
-    By editButton = By.xpath("//span[@class='iv-icon iv-icon-pencil integri-chat-edit-message']");
-    By editArea = By.xpath("//div[@class='integri-chat-message ']/textarea");
-    By message = By.cssSelector(".integri-chat-message-text");
-    By deleteButton = By.cssSelector((".integri-chat-remove-message"));
-    By scriptCode = By.xpath("//code");
-    By linkTextMsg = By.xpath("//*[@class='integri-chat-message-text']//a[@target='_blank']");
-    By emptyEditedTextMsg = By.cssSelector(".integri-notify-error");
-    By trialMessageScreen = By.xpath("//div[@class='sign-up']/..");
+    public static final String URL = "https://dev.integrivideo.com/demo/chat/new";
+    private By inviteLink = By.id("invite-users-to-chat");
+    private By textArea = By.xpath("//*[@placeholder='Start typing here']");
+    private By sendMessageButton = By.xpath("//*[@title='Send message']");
+    private By editButton = By.xpath("//span[@class='iv-icon iv-icon-pencil integri-chat-edit-message']");
+    private By editArea = By.xpath("//div[@class='integri-chat-message ']/textarea");
+    private By message = By.cssSelector(".integri-chat-message-text");
+    private By deleteButton = By.cssSelector((".integri-chat-remove-message"));
+    private By scriptCode = By.xpath("//code");
+    private By linkTextMsg = By.xpath("//*[@class='integri-chat-message-text']//a[@target='_blank']");
+    private By emptyEditedTextMsg = By.cssSelector(".integri-notify-error");
+    private By trialMessageScreen = By.xpath("//div[@class='sign-up']/..");
 
     public IntegriVideoChatPage(WebDriver driver) {
         this.driver = driver;
@@ -58,7 +58,8 @@ public class IntegriVideoChatPage {
     }
 
     public void verifyText(String expectedString){
-        String actualString = driver.findElement(message).getText();
+        List<WebElement> messages = driver.findElements(message);
+        String actualString = messages.get(0).getText();
         Assert.assertEquals(actualString, expectedString);
     }
 
@@ -75,11 +76,22 @@ public class IntegriVideoChatPage {
         Assert.assertEquals(actualErrorMsg, errorMessage);
     }
 
+    public void getTrialScreen(){
+        for (int i = 1; i <= 11; i++){
+            inputText("test");
+            sendTextWithEnter();
+            if (i == 11){
+                break;
+            }
+            wait.until(ExpectedConditions.numberOfElementsToBe(message, i));
+        }
+    }
+
     public void verifyTrialMsgText(){
         String trialMsg = "This is trial version";
-        wait.until(ExpectedConditions.textToBe(trialMessageScreen, trialMsg));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(trialMessageScreen)));
         String actualTrialMsg = driver.findElement(trialMessageScreen).getText();
-        Assert.assertEquals(actualTrialMsg, trialMsg);
+        Assert.assertTrue(actualTrialMsg.contains(trialMsg));
     }
 
     public void clickInvite(){
