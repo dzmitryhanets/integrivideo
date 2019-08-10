@@ -129,7 +129,7 @@ public class IntegriVideoChatPage {
         driver.findElement(scriptCode).click();
     }
 
-    public String getCodeText() {
+    public String getCodeText(){
         return driver.findElement(scriptCode).getText().replace("\n", "").replace("\r", "");
     }
 
