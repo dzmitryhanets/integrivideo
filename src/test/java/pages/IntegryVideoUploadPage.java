@@ -51,6 +51,7 @@ public class IntegryVideoUploadPage{
     public void verifyMultipleAttachments(int expectedNumber){
         List<WebElement> uploadFiles = driver.findElements(attachedFileName);
         int actualNumber = uploadFiles.size();
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(attachedFileName));
         Assert.assertEquals(actualNumber, expectedNumber);
     }
 
