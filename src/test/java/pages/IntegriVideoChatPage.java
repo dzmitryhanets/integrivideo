@@ -158,7 +158,6 @@ public class IntegriVideoChatPage {
         driver.findElements(deleteButton).get(messageIndex - 1).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        //wait.until(ExpectedConditions.textToBe(message, "removed..."));
     }
 
 }
