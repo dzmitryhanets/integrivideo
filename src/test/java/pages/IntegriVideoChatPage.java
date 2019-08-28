@@ -26,7 +26,7 @@ public class IntegriVideoChatPage {
     private By emptyEditedTextMsg = By.cssSelector(".integri-notify-error");
     private By trialMessageScreen = By.xpath("//div[@class='sign-up']/..");
 
-    public IntegriVideoChatPage(WebDriver driver){
+    public IntegriVideoChatPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, 10);
     }
@@ -39,14 +39,14 @@ public class IntegriVideoChatPage {
         driver.findElement(textArea).sendKeys(text);
     }
 
-    public void inputAndVerifyLongText(String text){
-        text = "A";
-        for (int i = 1; i < 1000; i++){
+    public void inputAndVerifyLongText(int messageNumber,int stringLength) {
+        String text = "A";
+        for (int i = 1; i < stringLength; i++){
             text = text + "A";
         }
         driver.findElement(textArea).sendKeys(text);
         sendText();
-        verifyText(text);
+        verifyText(messageNumber, text);
     }
 
     public void sendText(){
@@ -57,28 +57,28 @@ public class IntegriVideoChatPage {
         driver.findElement(textArea).sendKeys(Keys.ENTER);
     }
 
-    public void verifyText(String expectedString){
+    public void verifyText(int messageNumber, String expectedString) {
         List<WebElement> messages = driver.findElements(message);
-        String actualString = messages.get(0).getText();
+        String actualString = messages.get(messageNumber - 1).getText();
         Assert.assertEquals(actualString, expectedString);
     }
 
-    public void verifyLinkMsg(String expectedLinkMsg){
+    public void verifyLinkMsg(String expectedLinkMsg) {
         wait.until(ExpectedConditions.textToBe(linkTextMsg, expectedLinkMsg));
         String actualLinkMsg = driver.findElement(linkTextMsg).getText();
         Assert.assertEquals(actualLinkMsg, expectedLinkMsg);
     }
 
-    public void verifyEmptyTextErrorMsg(){
+    public void verifyEmptyTextErrorMsg() {
         String errorMessage = "Message cannot be empty!";
         wait.until(ExpectedConditions.textToBe(emptyEditedTextMsg, errorMessage));
         String actualErrorMsg = driver.findElement(emptyEditedTextMsg).getText();
         Assert.assertEquals(actualErrorMsg, errorMessage);
     }
 
-    public void getTrialScreen(){
-        for (int i = 1; i <= 11; i++){
-            inputText("test");
+    public void sendMultipleMessages(int messagesCount, String text) {
+        for (int i = 1; i <= messagesCount; i++){
+            inputText(text);
             sendTextWithEnter();
             if (i == 11){
                 break;
@@ -87,7 +87,7 @@ public class IntegriVideoChatPage {
         }
     }
 
-    public void verifyTrialMsgText(){
+    public void verifyTrialMsgText() {
         String trialMsg = "This is trial version";
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(trialMessageScreen)));
         String actualTrialMsg = driver.findElement(trialMessageScreen).getText();
@@ -98,7 +98,7 @@ public class IntegriVideoChatPage {
         driver.findElement(inviteLink).click();
     }
 
-    public void verifyInviteLink(String expectedLink){
+    public void verifyInviteLink(String expectedLink) {
         try {
             String actualLink = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
             Assert.assertEquals(actualLink, expectedLink);
@@ -109,7 +109,7 @@ public class IntegriVideoChatPage {
         }
     }
 
-    public void clickEditMessageBtn(String editedText){
+    public void editMessageBtn(String editedText) {
         driver.findElement(editButton).click();
         driver.findElement(editArea).click();
         driver.findElement(editArea).clear();
@@ -118,7 +118,16 @@ public class IntegriVideoChatPage {
         wait.until(ExpectedConditions.textToBe(message, editedText));
     }
 
-    public void removeMessage(){
+    public void editAnyMessageBtn(int messageNumber, String editedText) {
+        driver.findElements(editButton).get(messageNumber - 1).click();
+        driver.findElement(editArea).click();
+        driver.findElement(editArea).clear();
+        driver.findElement(editArea).sendKeys(editedText);
+        driver.findElement(editArea).sendKeys(Keys.ENTER);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(editArea));
+    }
+
+    public void removeMessage() {
         driver.findElement(deleteButton).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();
@@ -133,7 +142,7 @@ public class IntegriVideoChatPage {
         return driver.findElement(scriptCode).getText().replace("\n", "").replace("\r", "");
     }
 
-    public void verifyScript(String expectedScript){
+    public void verifyScript(String expectedScript) {
         try {
             String actualScript = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
             Assert.assertEquals(actualScript, expectedScript);
@@ -142,6 +151,13 @@ public class IntegriVideoChatPage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void removeListMessage(int messageIndex) {
+        List<WebElement> messages = driver.findElements(message);
+        driver.findElements(deleteButton).get(messageIndex - 1).click();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
     }
 
 }

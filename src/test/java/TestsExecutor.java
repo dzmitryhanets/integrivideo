@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import pages.IntegriVideoChatPage;
 import pages.IntegryVideoSettingsPage;
 import pages.IntegryVideoUploadPage;
+import pages.LoginPageFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,29 +20,38 @@ public class TestsExecutor {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
+    @Test (description = "пройти авторизацию")
+    public void loginTest() {
+        LoginPageFactory loginPage = new LoginPageFactory(driver);
+        loginPage
+                .openPage()
+                .login("tms4@mailinator.com", "Password01")
+                .verifyLoginSuccess("Projects");
+    }
+
     @Test (description = "Отправить любое сообщение используя Кнопку")
-    public void messageIsDisplayedTest(){
+    public void messageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
         chat.sendText();
-        chat.verifyText("test");
+        chat.verifyText(1, "test");
     }
 
     @Test (description = "Отправить любое сообщение используя Enter")
-    public void messageIsSentByEnterTest(){
+    public void messageIsSentByEnterTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
         chat.sendTextWithEnter();
-        chat.verifyText("test");
+        chat.verifyText(1, "test");
     }
 
     @Test (description = "Отправить сообщение из 1000 символов")
-    public void longMessageIsDisplayedTest(){
+    public void longMessageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
-        chat.inputAndVerifyLongText("A");
+        chat.inputAndVerifyLongText(1, 1000);
     }
 
     @Test (description = "Отправить сообщение со ссылкой")
@@ -54,22 +64,22 @@ public class TestsExecutor {
     }
 
     @Test (description = "Отправить сообщение содержащее Javascript code")
-    public void injectionMessageIsDisplayedTest(){
+    public void injectionMessageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("<html><body><p>test</p></body></html>");
         chat.sendText();
-        chat.verifyText("test");
+        chat.verifyText(1, "test");
     }
 
     @Test (description = "Отредактировать сообщение")
-    public void editedMessageIsDisplayedTest(){
+    public void editedMessageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
         chat.sendText();
-        chat.clickEditMessageBtn("Edited Text");
-        chat.verifyText("Edited Text");
+        chat.editMessageBtn("Edited Text");
+        chat.verifyText(1, "Edited Text");
     }
 
     @Test (description = "Отредактировать сообщение удалив весь текст")
@@ -78,25 +88,25 @@ public class TestsExecutor {
         chat.openPage();
         chat.inputText("test");
         chat.sendText();
-        chat.clickEditMessageBtn("");
+        chat.editMessageBtn("");
         chat.verifyEmptyTextErrorMsg();
     }
 
     @Test (description = "Удалить сообщение")
-    public void messageIsDeleted(){
+    public void messageIsDeleted() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
         chat.sendText();
         chat.removeMessage();
-        chat.verifyText("removed...");
+        chat.verifyText(1, "removed...");
     }
 
     @Test (description = "Отправить 11 сообщений")
     public void trialMessageIsDisplayedTest(){
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
-        chat.getTrialScreen();
+        chat.sendMultipleMessages(11, "test");
         chat.verifyTrialMsgText();
     }
 
@@ -179,6 +189,16 @@ public class TestsExecutor {
         IntegryVideoSettingsPage settings = new IntegryVideoSettingsPage(driver);
         settings.clickSettingsBtn();
         settings.closeSettingsModal();
+    }
+
+    @Test (description = "")
+    public void additionalTest() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.sendMultipleMessages(3, "test");
+        chat.editAnyMessageBtn(2, "Edited Text");
+        chat.verifyText(2, "Edited Text");
+        chat.removeListMessage(3);
     }
 
     @AfterTest
