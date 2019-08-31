@@ -10,6 +10,7 @@ public class ProjectsPage {
     WebDriver driver;
     WebDriverWait wait;
 
+    String projectURL = "https://dev.integrivideo.com/app/projects";
     private By addProjectIcon = By.xpath("//a[@href='/app/projects/new']");
     private By button = By.xpath("//button[@class='btn']");
     private By nameInputField = By.xpath("//input[@name='name']");
@@ -19,8 +20,10 @@ public class ProjectsPage {
     private By editLink = By.xpath("//div[@class='col-2 actions']//a[contains(text(),'Edit')]");
     private By circleTitle = By.xpath("//div[@class='circle']");
     private By addComponentBtn = By.xpath("//div[@class='status']");
-    private By componentTypeSelect = By.xpath("//span[@class='select2-selection__arrow']");
-    private By trialMessageScreen = By.xpath("//div[@class='sign-up']/..");
+    private By componentTypeSelect = By.xpath("//option");
+    private By componentNameInput = By.xpath("//input[@placeholder='New component']");
+    private By component = By.xpath("//div[@class='component']");
+    private By linkToComponents = By.xpath("//a[@class='nav-link']");
 
     public ProjectsPage(WebDriver driver) {
         this.driver = driver;
@@ -74,7 +77,27 @@ public class ProjectsPage {
 
     public ProjectsPage clickAddComponent() {
         driver.findElement(addComponentBtn).click();
-        driver.findElement(componentTypeSelect).click();
+        return this;
+    }
+
+    public ProjectsPage inputComponentForm(int option, String name) {
+        driver.findElements(componentTypeSelect).get(option - 1).click();
+        driver.findElement(componentNameInput).click();
+        driver.findElement(componentNameInput).clear();
+        driver.findElement(componentNameInput).sendKeys(name);
+        createProject();
+        wait.until(ExpectedConditions.textToBe(button, "Update"));
+        return this;
+    }
+
+    public ProjectsPage getProjectsPage() {
+        driver.navigate().to(projectURL);
+        return this;
+    }
+
+    public ProjectsPage verifyComponent(int componentsCount) {
+        driver.findElements(linkToComponents).get(1).click();
+        Assert.assertEquals(driver.findElements(component).size(), componentsCount);
         return this;
     }
 }

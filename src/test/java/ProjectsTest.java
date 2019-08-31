@@ -27,20 +27,35 @@ public class ProjectsTest {
     public void newProjectShouldBeAdded() {
         ProjectsPage page = new ProjectsPage(driver);
         page
+                .getProjectsPage()
                 .clickAddProject()
                 .inputProjectFields("test", "test", "test.com")
                 .createProject()
-                .verifyProjects(3);
+                .verifyProjects(4);
     }
 
     @Test
     public void projectShouldBeEdited() {
         ProjectsPage page = new ProjectsPage(driver);
         page
+                .getProjectsPage()
                 .clickCreatedProject(1)
                 .getEditProjectForm()
                 .inputProjectFields("New edited", "Edited", "Edited.com")
                 .createProject()
                 .verifyEditedProject(1, "NE");
+    }
+
+    @Test
+    public void componentShouldBeAdded() {
+        ProjectsPage page = new ProjectsPage(driver);
+        page
+                .getProjectsPage()
+                .clickCreatedProject(2)
+                .clickAddComponent()
+                .inputComponentForm(2, "name")
+                .getProjectsPage()
+                .clickCreatedProject(2)
+                .verifyComponent(19);
     }
 }
