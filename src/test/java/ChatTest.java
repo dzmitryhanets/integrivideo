@@ -10,7 +10,7 @@ import pages.LoginPageFactory;
 
 import java.util.concurrent.TimeUnit;
 
-public class TestsExecutor {
+public class ChatTest {
     WebDriver driver;
     @BeforeTest
     public void openDriver(){
@@ -18,15 +18,6 @@ public class TestsExecutor {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-    }
-
-    @Test (description = "пройти авторизацию")
-    public void loginTest() {
-        LoginPageFactory loginPage = new LoginPageFactory(driver);
-        loginPage
-                .openPage()
-                .login("tms4@mailinator.com", "Password01")
-                .verifyLoginSuccess("Projects");
     }
 
     @Test (description = "Отправить любое сообщение используя Кнопку")
