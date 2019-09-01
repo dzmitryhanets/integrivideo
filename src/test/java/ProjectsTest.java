@@ -56,6 +56,18 @@ public class ProjectsTest {
                 .inputComponentForm(2, "name")
                 .getProjectsPage()
                 .clickCreatedProject(2)
-                .verifyComponent(19);
+                .verifyComponent(20);
+    }
+
+    @Test
+    public void componentShouldBeEdited() {
+        ProjectsPage page = new ProjectsPage(driver);
+        page
+                .getProjectsPage()
+                .clickCreatedProject(2)
+                .getComponent(2)
+                .editComponent("edited name")
+                .getComponent(2)
+                .verifyEditedComponent("edited name");
     }
 }

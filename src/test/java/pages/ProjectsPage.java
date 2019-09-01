@@ -1,10 +1,19 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
+
+import static org.openqa.selenium.Keys.HOME;
+import static org.openqa.selenium.Keys.SHIFT;
 
 public class ProjectsPage {
     WebDriver driver;
@@ -95,9 +104,37 @@ public class ProjectsPage {
         return this;
     }
 
+    public ProjectsPage getComponent(int componentNumber) {
+        driver.findElements(component).get(componentNumber - 1).click();
+        return this;
+    }
+
     public ProjectsPage verifyComponent(int componentsCount) {
         driver.findElements(linkToComponents).get(1).click();
         Assert.assertEquals(driver.findElements(component).size(), componentsCount);
         return this;
     }
+
+    public ProjectsPage editComponent(String editedName) {
+        driver.findElement(componentNameInput).click();
+        driver.findElement(componentNameInput).clear();
+        driver.findElement(componentNameInput).sendKeys(editedName);
+        createProject();
+        return this;
+    }
+
+    public ProjectsPage verifyEditedComponent(String expectedName) {
+        driver.findElement(componentNameInput).sendKeys(SHIFT, HOME);
+        driver.findElement(componentNameInput).sendKeys(Keys.CONTROL + "c");
+        try {
+            String actualName = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+            Assert.assertEquals(actualName, expectedName);
+        } catch (UnsupportedFlavorException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
 }
