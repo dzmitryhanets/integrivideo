@@ -1,27 +1,7 @@
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.LoginPageFactory;
 import pages.ProjectsPage;
 
-import java.util.concurrent.TimeUnit;
-
-public class ProjectsTest {
-    WebDriver driver;
-
-    @BeforeClass
-    public void openDriver(){
-        System.setProperty("webdriver.chrome.driver", "src/test/resources/webdrivers/chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        LoginPageFactory loginPage = new LoginPageFactory(driver);
-        loginPage
-                .openPage()
-                .login("tms4@mailinator.com", "Password01")
-                .verifyLoginSuccess("Projects");
-    }
+public class ProjectsTest extends BaseTest {
 
     @Test
     public void newProjectShouldBeAdded() {
@@ -31,7 +11,7 @@ public class ProjectsTest {
                 .clickAddProject()
                 .inputProjectFields("test", "test", "test.com")
                 .createProject()
-                .verifyProjects(4);
+                .verifyProjects(6);
     }
 
     @Test
@@ -56,7 +36,7 @@ public class ProjectsTest {
                 .inputComponentForm(2, "name")
                 .getProjectsPage()
                 .clickCreatedProject(2)
-                .verifyComponent(20);
+                .verifyComponent(21);
     }
 
     @Test
