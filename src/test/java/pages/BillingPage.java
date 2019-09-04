@@ -21,8 +21,10 @@ public class BillingPage {
     private By addNewBtn = By.xpath("//*[contains(text(),'Add new')]");
     private By cardInput = By.xpath("//input[@class='form-control']");
     private By addCardBtn = By.xpath("//button[@class='btn']");
-    private By errorMsg = By.xpath("//span[@data-notify='message']");
-    private By payPalBtn = By.xpath("//div[@data-funding-source='paypal']");
+    private By message = By.xpath("//span[@data-notify='message']");
+    private By payPalBtn = By.xpath("//iframe[@class='zoid-component-frame zoid-visible']");
+    private By addedCard = By.xpath("//div[@class='cards']/div[@class='row']");
+    private By removeCard = By.xpath("//div[@class='cards']//a[text()='Remove']");
 
     public BillingPage openBillingPage() {
         driver.get(billingURL);
@@ -31,6 +33,7 @@ public class BillingPage {
 
     public BillingPage clickAddBtn() {
         driver.findElement(addNewBtn).click();
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(payPalBtn)));
         return this;
     }
 
@@ -52,17 +55,21 @@ public class BillingPage {
         return this;
     }
 
-    public BillingPage verifyInvalidCard() {
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(errorMsg)));
-        String message = driver.findElement(errorMsg).getText();
-        Assert.assertEquals(message, "Credit card is invalid");
+    public BillingPage verifyAddedCard(int expectedCount) {
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//h3[text()='Payment methods']"))));
+        Assert.assertEquals(driver.findElements(addedCard).size(), expectedCount);
         return this;
     }
 
-    public BillingPage clickPayPalBtn() {
-        driver.findElement(payPalBtn).click();
+    public BillingPage removeCard(int cardNumber) {
+        driver.findElements(removeCard).get(cardNumber - 1).click();
         return this;
     }
 
-
+    public BillingPage verifyMessage(String expectedText) {
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(message)));
+        String text = driver.findElement(message).getText();
+        Assert.assertEquals(text, expectedText);
+        return this;
+    }
 }

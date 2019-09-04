@@ -3,13 +3,33 @@ import pages.BillingPage;
 
 public class BillingTest extends BaseTest {
     @Test
+    public void cardIsAdded() {
+        new BillingPage(driver)
+                .openBillingPage()
+                .clickAddBtn()
+                .inputCardParameters("5555555555554444", "11", "2019", "name name")
+                .clackAddCardBtn()
+                .verifyAddedCard(1);
+    }
+
+    @Test
+    public void cardIsRemoved() {
+        new BillingPage(driver)
+                .openBillingPage()
+                .clickAddBtn()
+                .inputCardParameters("4242424242424242", "11", "2019", "name name")
+                .clackAddCardBtn()
+                .removeCard(1)
+                .verifyMessage("Payment method successfully removed");
+    }
+
+    @Test
     public void invalidCardShouldNotBeAdded() {
-        BillingPage page = new BillingPage(driver);
-        page
+        new BillingPage(driver)
                 .openBillingPage()
                 .clickAddBtn()
                 .inputCardParameters("1111 1111 1111 1111", "11", "2019", "User User")
                 .clackAddCardBtn()
-                .verifyInvalidCard();
+                .verifyMessage("Credit card is invalid");
     }
 }

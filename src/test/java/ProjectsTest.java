@@ -11,7 +11,7 @@ public class ProjectsTest extends BaseTest {
                 .clickAddProject()
                 .inputProjectFields("test", "test", "test.com")
                 .createProject()
-                .verifyProjects(6);
+                .verifyProjects(7);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ProjectsTest extends BaseTest {
                 .inputComponentForm(2, "name")
                 .getProjectsPage()
                 .clickCreatedProject(2)
-                .verifyComponent(21);
+                .verifyComponent(22);
     }
 
     @Test
