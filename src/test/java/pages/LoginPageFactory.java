@@ -44,6 +44,6 @@ public class LoginPageFactory {
 
     public ProjectsPage verifyLoginSuccess(String expectedPage) {
         Assert.assertEquals(openedPage.getText(), expectedPage);
-        return new ProjectsPage();
+        return new ProjectsPage(driver);
     }
 }
