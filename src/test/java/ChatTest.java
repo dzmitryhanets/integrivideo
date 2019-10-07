@@ -1,3 +1,4 @@
+import io.qameta.allure.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
@@ -7,6 +8,7 @@ import pages.IntegriVideoChatPage;
 import pages.IntegryVideoSettingsPage;
 import pages.IntegryVideoUploadPage;
 import pages.LoginPageFactory;
+import utils.AllureUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,12 +23,14 @@ public class ChatTest {
     }
 
     @Test (description = "Отправить любое сообщение используя Кнопку")
+    @Description ("Проверка отправления сообщения при нажатии кнопки Send")
     public void messageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
         chat.sendText();
         chat.verifyText(1, "test");
+        AllureUtils.takeScreenshot(driver);
     }
 
     @Test (description = "Отправить любое сообщение используя Enter")

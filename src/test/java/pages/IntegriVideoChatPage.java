@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -31,10 +32,12 @@ public class IntegriVideoChatPage {
         this.wait = new WebDriverWait(driver, 10);
     }
 
+    @Step ("Открывает страницу чата")
     public void openPage(){
         driver.get(URL);
     }
 
+    @Step ("Вводит {text}")
     public void inputText(String text){
         driver.findElement(textArea).sendKeys(text);
     }
@@ -49,14 +52,17 @@ public class IntegriVideoChatPage {
         verifyText(messageNumber, text);
     }
 
+    @Step ("Отправляет введенное значение нажатием Send")
     public void sendText(){
         driver.findElement(sendMessageButton).click();
     }
 
+    @Step ("Отправляет введенное значение нажатием Enter")
     public void sendTextWithEnter(){
         driver.findElement(textArea).sendKeys(Keys.ENTER);
     }
 
+    @Step ("Проверяет, что введенное значение соответствует ожидаемому {expectedString}")
     public void verifyText(int messageNumber, String expectedString) {
         List<WebElement> messages = driver.findElements(message);
         String actualString = messages.get(messageNumber - 1).getText();
