@@ -7,8 +7,6 @@ import org.testng.annotations.Test;
 import pages.IntegriVideoChatPage;
 import pages.IntegryVideoSettingsPage;
 import pages.IntegryVideoUploadPage;
-import pages.LoginPageFactory;
-import utils.AllureUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,18 +20,17 @@ public class ChatTest {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-    @Test (description = "Отправить любое сообщение используя Кнопку")
-    @Description ("Проверка отправления сообщения при нажатии кнопки Send")
+    @Test (description = "Send message by clicking Send button")
+    @Description ("This validation controls if Send button is working")
     public void messageIsDisplayedTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.inputText("test");
         chat.sendText();
         chat.verifyText(1, "test");
-        AllureUtils.takeScreenshot(driver);
     }
 
-    @Test (description = "Отправить любое сообщение используя Enter")
+    @Test (description = "Send message by clicking Enter button")
     public void messageIsSentByEnterTest() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();

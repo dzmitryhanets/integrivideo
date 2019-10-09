@@ -5,6 +5,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import utils.AllureUtils;
+
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -32,12 +34,12 @@ public class IntegriVideoChatPage {
         this.wait = new WebDriverWait(driver, 10);
     }
 
-    @Step ("Открывает страницу чата")
+    @Step ("Open Chat page")
     public void openPage(){
         driver.get(URL);
     }
 
-    @Step ("Вводит {text}")
+    @Step ("Input {text}")
     public void inputText(String text){
         driver.findElement(textArea).sendKeys(text);
     }
@@ -52,21 +54,22 @@ public class IntegriVideoChatPage {
         verifyText(messageNumber, text);
     }
 
-    @Step ("Отправляет введенное значение нажатием Send")
+    @Step ("Message is sent by Send button")
     public void sendText(){
         driver.findElement(sendMessageButton).click();
     }
 
-    @Step ("Отправляет введенное значение нажатием Enter")
+    @Step ("Message is sent by Enter button")
     public void sendTextWithEnter(){
         driver.findElement(textArea).sendKeys(Keys.ENTER);
     }
 
-    @Step ("Проверяет, что введенное значение соответствует ожидаемому {expectedString}")
+    @Step ("Checking if correct message was sent (expected string is {expectedString})")
     public void verifyText(int messageNumber, String expectedString) {
         List<WebElement> messages = driver.findElements(message);
         String actualString = messages.get(messageNumber - 1).getText();
         Assert.assertEquals(actualString, expectedString);
+        AllureUtils.takeScreenshot(driver);
     }
 
     public void verifyLinkMsg(String expectedLinkMsg) {
